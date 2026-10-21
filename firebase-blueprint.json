@@ -1,0 +1,145 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Authenticated user profile in ORBIT",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "email": { "type": "string", "description": "User email address" },
+        "photoURL": { "type": "string", "description": "User avatar URL" },
+        "walletAddress": { "type": "string", "description": "Ethereum wallet address" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "description": "Last update timestamp" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Asset": {
+      "title": "Physical Object Asset",
+      "description": "Physical object registered on ORBIT with cryptographic passport",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique object ID e.g. orbit-7821" },
+        "orbitId": { "type": "string", "description": "Display passport ID e.g. ORBIT #7821" },
+        "name": { "type": "string", "description": "Object name" },
+        "category": { "type": "string", "description": "Asset category" },
+        "brand": { "type": "string", "description": "Manufacturer brand" },
+        "model": { "type": "string", "description": "Model name or number" },
+        "serialNumber": { "type": "string", "description": "Physical serial number" },
+        "serialHash": { "type": "string", "description": "SHA-256 fingerprint hash" },
+        "manufactureYear": { "type": "number", "description": "Manufacturing year" },
+        "condition": { "type": "string", "description": "Item condition" },
+        "description": { "type": "string", "description": "Description and provenance details" },
+        "imageUrl": { "type": "string", "description": "Asset image URL" },
+        "registeredAt": { "type": "string", "description": "Registration ISO date" },
+        "currentOwnerAddress": { "type": "string", "description": "Ethereum address of current owner" },
+        "currentOwnerName": { "type": "string", "description": "Display name of current owner" },
+        "status": { "type": "string", "description": "Lifecycle status: ACTIVE, LOST, CLAIM_PENDING, TRANSFERRED, RECOVERED" },
+        "recoveryRewardEth": { "type": "string", "description": "Bounty reward in ETH" },
+        "escrowLocked": { "type": "boolean", "description": "Whether reward is locked in escrow" },
+        "lostDate": { "type": "string", "description": "Date reported lost if applicable" },
+        "lostLocation": { "type": "string", "description": "Location lost if applicable" },
+        "lostInstructions": { "type": "string", "description": "Finder instructions if lost" },
+        "creatorUid": { "type": "string", "description": "Firebase UID of creator" },
+        "ownerUid": { "type": "string", "description": "Firebase UID of owner" }
+      },
+      "required": ["id", "orbitId", "name", "category", "serialNumber", "serialHash", "currentOwnerAddress", "status"]
+    },
+    "AssetEvent": {
+      "title": "Asset Event / Timeline Record",
+      "description": "Chronological history record for an asset",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Event ID" },
+        "assetId": { "type": "string", "description": "ID of parent asset" },
+        "type": { "type": "string", "description": "Event type" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" },
+        "blockNumber": { "type": "number", "description": "Block number" },
+        "txHash": { "type": "string", "description": "Transaction hash" },
+        "actorAddress": { "type": "string", "description": "Actor wallet address" },
+        "actorName": { "type": "string", "description": "Actor display name" },
+        "title": { "type": "string", "description": "Event summary title" },
+        "description": { "type": "string", "description": "Detailed description" }
+      },
+      "required": ["id", "assetId", "type", "timestamp", "title"]
+    },
+    "Transfer": {
+      "title": "Transfer",
+      "description": "Ownership transfer record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Transfer ID" },
+        "assetId": { "type": "string", "description": "Transferred asset ID" },
+        "fromAddress": { "type": "string", "description": "Previous owner wallet" },
+        "toAddress": { "type": "string", "description": "New owner wallet" },
+        "fromName": { "type": "string", "description": "Previous owner name" },
+        "toName": { "type": "string", "description": "New owner name" },
+        "status": { "type": "string", "description": "Transfer status: completed, pending" },
+        "initiatedAt": { "type": "string", "description": "Initiation timestamp" },
+        "completedAt": { "type": "string", "description": "Completion timestamp" },
+        "txHash": { "type": "string", "description": "Blockchain tx hash" }
+      },
+      "required": ["id", "assetId", "fromAddress", "toAddress", "status"]
+    },
+    "Repair": {
+      "title": "Repair Record",
+      "description": "Service and repair log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Repair ID" },
+        "assetId": { "type": "string", "description": "Asset ID" },
+        "serviceCenter": { "type": "string", "description": "Authorized service center" },
+        "title": { "type": "string", "description": "Title of maintenance" },
+        "description": { "type": "string", "description": "Description of work done" },
+        "invoiceHash": { "type": "string", "description": "Hash of invoice" },
+        "costEth": { "type": "string", "description": "Cost in ETH" },
+        "timestamp": { "type": "string", "description": "Timestamp" }
+      },
+      "required": ["id", "assetId", "title", "description", "timestamp"]
+    },
+    "RecoveryClaim": {
+      "title": "Recovery Claim",
+      "description": "Found claim for a lost asset",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Claim ID" },
+        "assetId": { "type": "string", "description": "Asset ID" },
+        "finderAddress": { "type": "string", "description": "Finder wallet address" },
+        "contactRelay": { "type": "string", "description": "Secure contact relay" },
+        "foundLocation": { "type": "string", "description": "Location item was found" },
+        "finderNotes": { "type": "string", "description": "Finder notes" },
+        "handshakeCode": { "type": "string", "description": "Cryptographic handover handshake code" },
+        "status": { "type": "string", "description": "Claim status" },
+        "createdAt": { "type": "string", "description": "Submission timestamp" }
+      },
+      "required": ["id", "assetId", "finderAddress", "handshakeCode", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/assets/{assetId}": {
+      "schema": "Asset",
+      "description": "Physical object passports and lifecycle state"
+    },
+    "/assets/{assetId}/events/{eventId}": {
+      "schema": "AssetEvent",
+      "description": "Asset timeline events subcollection"
+    },
+    "/transfers/{transferId}": {
+      "schema": "Transfer",
+      "description": "Custody transfer logs"
+    },
+    "/repairs/{repairId}": {
+      "schema": "Repair",
+      "description": "Certified repairs and maintenance logs"
+    },
+    "/recoveryClaims/{claimId}": {
+      "schema": "RecoveryClaim",
+      "description": "Recovery claims and escrow handshakes"
+    }
+  }
+}

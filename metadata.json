@@ -1,0 +1,7 @@
+{
+  "name": "ORBIT - Physical Object Digital Passport & Recovery Protocol",
+  "description": "Persistent digital identity, immutable lifecycle timeline, and smart escrow recovery system for valuable physical objects.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

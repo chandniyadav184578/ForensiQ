@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if isAuthenticated() && (request.auth.uid == userId);
+      allow delete: if false;
+    }
+
+    // Physical Object Assets
+    match /assets/{assetId} {
+      // Public read and registration access for physical QR scans and blockchain registry
+      allow read: if true;
+      allow create, update, delete: if true;
+
+      // Asset Timeline Events (Immutable History)
+      match /events/{eventId} {
+        allow read, create: if true;
+        allow update, delete: if false;
+      }
+    }
+
+    // Custody Transfers
+    match /transfers/{transferId} {
+      allow read, write: if true;
+    }
+
+    // Service & Repair Records
+    match /repairs/{repairId} {
+      allow read, write: if true;
+    }
+
+    // Recovery Claims & Escrow Handshakes
+    match /recoveryClaims/{claimId} {
+      allow read, write: if true;
+    }
+
+    // System connection test doc
+    match /system/{docId} {
+      allow read, write: if true;
+    }
+  }
+}
